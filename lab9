@@ -1,0 +1,49 @@
+main.py
+from ship import Ship
+
+def main():
+    # Точка входу в програму
+    ship1 = Ship("Seaworthy", "John Doe", 500)
+    ship1.sail()
+    ship1.stop()
+    ship1.print_details()
+
+if name == "main":
+    main()
+
+ship.py
+from captain import Captain
+from engine import Engine
+
+class Ship:
+    def init(self, name, captain_name, engine_power):
+        self.name = name
+        self.captain = Captain(captain_name)
+        self.engine = Engine(engine_power)
+
+    def sail(self):
+        print(f"The ship {self.name} is sailing.")
+
+    def stop(self):
+        print(f"The ship {self.name} has stopped.")
+
+    def print_details(self):
+        print(f"Details of the ship {self.name}:")
+        print(self.engine)
+        print(self.captain)
+
+engine.py
+class Engine:
+    def init(self, power):
+        self.power = power
+
+    def str(self):
+        return f"Engine with power {self.power} HP"
+
+captain.py
+class Captain:
+    def init(self, name):
+        self.name = name
+
+    def str(self):
+        return f"Captain: {self.name}"
