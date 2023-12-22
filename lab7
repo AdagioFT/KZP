@@ -1,0 +1,48 @@
+# -*- coding: cp1251 -*-
+
+def generate_hatched_array(outer_size, inner_size, fill_char):
+    hatched_array = [['*' for _ in range(outer_size)] for _ in range(outer_size)]
+
+    for i in range(outer_size):
+        for j in range(outer_size):
+            if (outer_size - inner_size) // 2 <= i < (outer_size + inner_size) // 2 and \
+               (outer_size - inner_size) // 2 <= j < (outer_size + inner_size) // 2:
+                hatched_array[i][j] = fill_char
+
+    return hatched_array
+
+
+def print_array(array):
+    for row in array:
+        print(' '.join(row))
+
+
+def save_array_to_file(array, filename):
+    with open(filename, 'w') as file:
+        for row in array:
+            file.write(' '.join(row) + '\n')
+
+    print(f"Масив було успішно збережено у файл {filename}")
+
+
+def main():
+    try:
+        outer_size = int(input("Введіть розмір зовнішнього квадрата: "))
+        inner_size = int(input("Введіть розмір внутрішнього заштрихованого квадрата: "))
+        fill_char = input("Введіть символ-заповнювач: ")[0]
+
+        hatched_array = generate_hatched_array(outer_size, inner_size, fill_char)
+
+        print("\nЗгенерований масив:")
+        print_array(hatched_array)
+
+        save_array_to_file(hatched_array, "output.txt")
+
+    except ValueError:
+        print("Некоректне введення. Будь ласка, введіть коректні значення.")
+    except KeyboardInterrupt:
+        print("\nРоботу програми перервано користувачем.")
+
+
+if name == "main":
+    main()
