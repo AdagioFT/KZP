@@ -1,0 +1,90 @@
+package Мартов.КІ307.Lab2;
+import java.io.*;
+import java.util.logging.FileHandler;
+import java.util.logging.Logger;
+import java.util.logging.SimpleFormatter;
+
+class Engine {
+    private int power;
+
+    Engine(int power) {
+        this.power = power;
+    }
+
+    public int getPower() {
+        return power;
+    }
+
+    public String toString() {
+        return "Engine with power " + power + " HP";
+    }
+}
+
+class Captain {
+    private String name;
+
+    Captain(String name) {
+        this.name = name;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public String toString() {
+        return "Captain: " + name;
+    }
+}
+
+class Ship {
+    private String name;
+    private Engine engine;
+    private Captain captain;
+    private Logger logger;
+
+    Ship(String name, Engine engine, Captain captain) {
+        this.name = name;
+        this.engine = engine;
+        this.captain = captain;
+        initLogger();
+    }
+
+    private void initLogger() {
+        logger = Logger.getLogger("ShipLogger");
+        try {
+            FileHandler fileHandler = new FileHandler(name + "_log.txt");
+            logger.addHandler(fileHandler);
+            SimpleFormatter formatter = new SimpleFormatter();
+            fileHandler.setFormatter(formatter);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void sail() {
+        logger.info("The ship " + name + " is sailing.");
+    }
+
+    public void stop() {
+        logger.info("The ship " + name + " has stopped.");
+    }
+
+    public void printDetails() {
+        logger.info("Details of the ship " + name + ":");
+        logger.info("  " + engine);
+        logger.info("  " + captain);
+    }
+}
+
+public class Lab2 {
+    public static void main(String[] args) {
+        Engine shipEngine = new Engine(500);
+        Captain shipCaptain = new Captain("John Doe");
+        Ship myShip = new Ship("Seaworthy", shipEngine, shipCaptain);
+
+        // Демонстрація роботи корабля
+        myShip.sail();
+        myShip.stop();
+        myShip.printDetails();
+    }
+}
