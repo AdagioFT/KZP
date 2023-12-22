@@ -1,0 +1,88 @@
+package Мартов.КІ307.Lab5;
+
+import java.io.*;
+
+class Result implements Serializable {
+    private double x;
+    private double y;
+
+    public Result(double x, double y) {
+        this.x = x;
+        this.y = y;
+    }
+
+    public double getX() {
+        return x;
+    }
+
+    public double getY() {
+        return y;
+    }
+
+    @Override
+    public String toString() {
+        return "Result{" +
+                "x=" + x +
+                ", y=" + y +
+                '}';
+    }
+}
+
+class ResultIO {
+    // Запис у текстовий файл
+    public static void writeText(Result result, String fileName) {
+        try (PrintWriter writer = new PrintWriter(new FileWriter(fileName))) {
+            writer.println(result.getX());
+            writer.println(result.getY());
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    // Читання з текстового файлу
+    public static Result readText(String fileName) {
+        try (BufferedReader reader = new BufferedReader(new FileReader(fileName))) {
+            double x = Double.parseDouble(reader.readLine());
+            double y = Double.parseDouble(reader.readLine());
+            return new Result(x, y);
+        } catch (IOException | NumberFormatException e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    // Запис у двійковий файл
+    public static void writeBinary(Result result, String fileName) {
+        try (ObjectOutputStream outputStream = new ObjectOutputStream(new FileOutputStream(fileName))) {
+            outputStream.writeObject(result);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    // Читання з двійкового файлу
+    public static Result readBinary(String fileName) {
+        try (ObjectInputStream inputStream = new ObjectInputStream(new FileInputStream(fileName))) {
+            return (Result) inputStream.readObject();
+        } catch (IOException | ClassNotFoundException e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+}
+
+public class Lab5 {
+    public static void main(String[] args) {
+        Result result = new Result(1.5, 3.0);
+
+        // Тестування запису/читання у текстовому форматі
+        ResultIO.writeText(result, "result_text.txt");
+        Result readResultText = ResultIO.readText("result_text.txt");
+        System.out.println("Read from text file: " + readResultText);
+
+        // Тестування запису/читання у двійковому форматі
+        ResultIO.writeBinary(result, "result_binary.dat");
+        Result readResultBinary = ResultIO.readBinary("result_binary.dat");
+        System.out.println("Read from binary file: " + readResultBinary);
+    }
+}
