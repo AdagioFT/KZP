@@ -1,0 +1,85 @@
+package Мартов.КІ307.Lab6;
+
+import java.util.ArrayList;
+import java.util.List;
+
+class Wagon<T extends Comparable<T>> {
+    private List<T> elements;
+
+    public Wagon() {
+        this.elements = new ArrayList<>();
+    }
+
+    public void addElement(T element) {
+        elements.add(element);
+    }
+
+    public T removeElement() {
+        if (elements.isEmpty()) {
+            return null; // Повертаємо null, якщо список пустий
+        }
+
+        // При парному варіанті шукаємо мінімальний елемент, при непарному - максимальний
+        T extremum = elements.get(0);
+        for (T element : elements) {
+            if (extremum.compareTo(element) > 0) {
+                extremum = element;
+            }
+        }
+
+        elements.remove(extremum);
+        return extremum;
+    }
+
+    public void printElements() {
+        System.out.println("Elements in the wagon: " + elements);
+    }
+
+    public boolean isEmpty() {
+        return elements.isEmpty();
+    }
+}
+
+class TrainCar implements Comparable<TrainCar> {
+    private String cargo;
+
+    public TrainCar(String cargo) {
+        this.cargo = cargo;
+    }
+
+    @Override
+    public int compareTo(TrainCar other) {
+        // Реалізуйте логіку порівняння екземплярів TrainCar тут
+        // Наприклад, порівнюйте за назвою вантажу або іншими параметрами
+        return this.cargo.compareTo(other.cargo);
+    }
+
+    @Override
+    public String toString() {
+        return "TrainCar{" +
+                "cargo='" + cargo + '\'' +
+                '}';
+    }
+}
+
+class Lab6 {
+    public static void main(String[] args) {
+        // Приклад використання класу Wagon з різними типами елементів
+        Wagon<Integer> integerWagon = new Wagon<>();
+        integerWagon.addElement(10);
+        integerWagon.addElement(5);
+        integerWagon.addElement(8);
+
+        System.out.println("Removed element: " + integerWagon.removeElement());
+        integerWagon.printElements();
+
+        Wagon<TrainCar> trainCarWagon = new Wagon<>();
+        trainCarWagon.addElement(new TrainCar("Coal"));
+        trainCarWagon.addElement(new TrainCar("Wood"));
+        trainCarWagon.addElement(new TrainCar("Grain"));
+
+        System.out.println("Removed element: " + trainCarWagon.removeElement());
+        trainCarWagon.printElements();
+    }
+}
+
