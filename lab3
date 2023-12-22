@@ -1,0 +1,147 @@
+package Мартов.КІ307.Lab3;
+
+import java.io.*;
+import java.util.logging.FileHandler;
+import java.util.logging.Logger;
+import java.util.logging.SimpleFormatter;
+
+// Клас для двигуна
+class Engine {
+    private int power;
+
+    // Конструктор
+    Engine(int power) {
+        this.power = power;
+    }
+
+    // Геттер для потужності
+    public int getPower() {
+        return power;
+    }
+
+    // Перевизначення toString
+    public String toString() {
+        return "Engine with power " + power + " HP";
+    }
+}
+
+// Клас для капітана
+class Captain {
+    private String name;
+
+    // Конструктор
+    Captain(String name) {
+        this.name = name;
+    }
+
+    // Геттер для імені
+    public String getName() {
+        return name;
+    }
+
+    // Перевизначення toString
+    public String toString() {
+        return "Captain: " + name;
+    }
+}
+
+//Абстрактний клас для корабля
+abstract class Ship {
+ private String name;
+ private Engine engine;
+ private Captain captain;
+ protected Logger logger;  // Змінено модифікатор доступу
+
+ // Конструктор
+ Ship(String name, Engine engine, Captain captain) {
+     this.name = name;
+     this.engine = engine;
+     this.captain = captain;
+     initLogger();
+ }
+
+ private void initLogger() {
+     logger = Logger.getLogger("ShipLogger");
+     try {
+         FileHandler fileHandler = new FileHandler(name + "_log.txt");
+         logger.addHandler(fileHandler);
+         SimpleFormatter formatter = new SimpleFormatter();
+         fileHandler.setFormatter(formatter);
+     } catch (IOException e) {
+         e.printStackTrace();
+     }
+ }
+
+ // Абстрактний метод
+ public abstract void sail();
+
+ // Метод для отримання імені корабля
+ protected String getName() {
+     return name;
+ }
+
+ // Методи
+ public void stop() {
+     logger.info("The ship " + name + " has stopped.");
+ }
+
+ public void printDetails() {
+     logger.info("Details of the ship " + name + ":");
+     logger.info("  " + engine);
+     logger.info("  " + captain);
+ }
+}
+
+// Інтерфейс
+interface Sailing {
+    void navigate();
+}
+
+// Підклас
+class Frigate extends Ship implements Sailing {
+    private int missileCount;
+
+    // Конструктор
+    Frigate(String name, Engine engine, Captain captain, int missileCount) {
+        super(name, engine, captain);
+        this.missileCount = missileCount;
+    }
+
+    // Реалізація методу інтерфейсу
+    @Override
+    public void navigate() {
+        System.out.println("The frigate " + getName() + " is navigating.");
+    }
+
+    // Реалізація абстрактного методу
+    @Override
+    public void sail() {
+        logger.info("The frigate " + getName() + " is sailing.");
+    }
+
+    // Метод для отримання кількості ракет
+    public int getMissileCount() {
+        return missileCount;
+    }
+
+    // Перевизначення методу для виведення деталей
+    @Override
+    public void printDetails() {
+        super.printDetails();
+        logger.info("  Missile Count: " + missileCount);
+    }
+}
+
+public class Lab3 {
+    public static void main(String[] args) {
+        Engine frigateEngine = new Engine(800);
+        Captain frigateCaptain = new Captain("Jane Doe");
+        Frigate myFrigate = new Frigate("Warrior", frigateEngine, frigateCaptain, 50);
+
+        // Тестування та демонстрація роботи фрегату
+        myFrigate.sail();
+        myFrigate.navigate();
+        myFrigate.stop();
+        myFrigate.printDetails();
+    }
+}
