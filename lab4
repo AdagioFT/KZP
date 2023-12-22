@@ -1,0 +1,42 @@
+package Мартов.КІ307.Lab4;
+
+
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.PrintWriter;
+import java.util.Scanner;
+
+public class Lab4 {
+    public static double calculateExpression(double x) {
+        // Реалізація обчислення виразу y = cos(2x) / ctg(3x - 1)
+        double numerator = Math.cos(2 * x);
+        double denominator = 1 / Math.tan(3 * x - 1);
+        
+        // Обробка ситуації, коли знаменник рівний нулю
+        if (denominator == 0) {
+            throw new ArithmeticException("Division by zero. Cannot calculate expression.");
+        }
+
+        return numerator / denominator;
+    }
+
+    public static void main(String[] args) {
+        try (Scanner scanner = new Scanner(System.in);
+             PrintWriter writer = new PrintWriter(new FileWriter("result.txt"))) {
+
+            System.out.println("Enter the value of x: ");
+            double x = scanner.nextDouble();
+
+            double result = calculateExpression(x);
+
+            // Запис результату у файл
+            writer.println("Result for x = " + x + ": " + result);
+            System.out.println("Result has been written to result.txt.");
+
+        } catch (IOException e) {
+            System.err.println("Error writing to file: " + e.getMessage());
+        } catch (ArithmeticException e) {
+            System.err.println("Error calculating expression: " + e.getMessage());
+        }
+    }
+}
